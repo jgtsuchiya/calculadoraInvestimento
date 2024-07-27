@@ -1,8 +1,9 @@
 import { generateReturnsArray } from "./src/investmentGoals";
 
-const calculateButton = document.getElementById('calculate-results');
+const form = document.getElementById('investment-form');
 
-function renderProgression() {
+function renderProgression(evento) {
+    evento.preventDefault();
     const startingAmount = Number(document.getElementById('starting-amount').value);
     const additionalContribution = Number(document.getElementById('additional-contribution').value);
     const timeAmount = Number(document.getElementById('time-amount').value);
@@ -23,4 +24,4 @@ function renderProgression() {
     console.log(returnsArray);
 }
 
-calculateButton.addEventListener('click', renderProgression);
+form.addEventListener('submit', renderProgression);
