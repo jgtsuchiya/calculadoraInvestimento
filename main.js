@@ -1,4 +1,8 @@
 import { generateReturnsArray } from "./src/investmentGoals";
+import { Chart } from "chart.js/auto";
+
+const finalMoneyChart = document.getElementById('final-money-chart');
+const progressionChart = document.getElementById('progression');
 
 const form = document.getElementById('investment-form');
 const clearFormButton = document.getElementById('clear-form');
@@ -26,7 +30,28 @@ function renderProgression(evento) {
         returnRatePeriod,
     );
 
-    console.log(returnsArray);
+    new Chart(finalMoneyChart, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+            ],
+            datasets: [
+                {
+                    label: 'My First Dataset',
+                    data: [300, 50, 100],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }
+            ]
+        },
+    })
 }
 
 function clearForm() {
