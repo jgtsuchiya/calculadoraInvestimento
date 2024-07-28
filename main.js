@@ -1,6 +1,7 @@
 import { generateReturnsArray } from "./src/investmentGoals";
 
 const form = document.getElementById('investment-form');
+const clearFormButton = document.getElementById('clear-form');
 
 function renderProgression(evento) {
     evento.preventDefault();
@@ -28,6 +29,21 @@ function renderProgression(evento) {
     console.log(returnsArray);
 }
 
+function clearForm() {
+    form["starting-amount"].value = '';
+    form["additional-contribution"].value = '';
+    form["time-amount"].value = '';
+    form["return-rate"].value = '';
+    form["tax-rate"].value = '';
+
+    const errorInputsContainers = document.querySelectorAll('.error');
+
+    for (const errorInputContainer of errorInputsContainers) {
+        errorInputContainer.classList.remove('error');
+        errorInputContainer.parentElement.querySelector('p').remove();
+    }
+}
+
 function validadeInput(evento) {
     if (evento.target.value === '') {
         return;
@@ -37,9 +53,8 @@ function validadeInput(evento) {
     const grandParentElement = evento.target.parentElement.parentElement;
     const inputValue = evento.target.value.replace(",", ".");
 
-    if (isNaN(inputValue)
-        || Number(inputValue) <= 0
-        && !parentElement.classList.contains("error")) {
+    if (!parentElement.classList.contains("error")
+        && (isNaN(inputValue) || Number(inputValue) <= 0)) {
         const errorTextElement = document.createElement('p');
         errorTextElement.classList.add('text-red-500');
         errorTextElement.innerText = "Insira um valor número maior que zero";
@@ -61,3 +76,4 @@ for (const formElement of form) {
 }
 
 form.addEventListener('submit', renderProgression);
+clearFormButton.addEventListener('click', clearForm)
