@@ -7,6 +7,9 @@ const progressionChart = document.getElementById('progression');
 const form = document.getElementById('investment-form');
 const clearFormButton = document.getElementById('clear-form');
 
+let doughnutChartReference = {};
+let progressionChartReference = {};
+
 function formatCurrency(value) {
     return value.toFixed(2);
 }
@@ -17,6 +20,9 @@ function renderProgression(evento) {
     if (document.querySelector('.error')) {
         return;
     }
+
+    resetChart()
+
     const startingAmount = Number(document.getElementById('starting-amount').value.replace(",", "."));
     const additionalContribution = Number(document.getElementById('additional-contribution').value.replace(",", "."));
     const timeAmount = Number(document.getElementById('time-amount').value);
@@ -36,7 +42,7 @@ function renderProgression(evento) {
 
     const finalInvestmentObject = returnsArray[returnsArray.length - 1];
 
-    new Chart(finalMoneyChart, {
+    doughnutChartReference = new Chart(finalMoneyChart, {
         type: 'doughnut',
         data: {
             labels: [
@@ -60,9 +66,9 @@ function renderProgression(evento) {
                 }
             ]
         },
-    })
+    });
 
-    new Chart(progressionChart, {
+    progressionChartReference = new Chart(progressionChart, {
         type: 'bar',
         data: {
             labels: returnsArray.map(investmentObject => investmentObject.month),
@@ -95,12 +101,25 @@ function renderProgression(evento) {
     })
 }
 
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
+function resetChart() {
+    if (!isObjectEmpty(doughnutChartReference) && !isObjectEmpty(progressionChartReference)) {
+        doughnutChartReference.destroy();
+        progressionChartReference.destroy();
+    }
+}
+
 function clearForm() {
     form["starting-amount"].value = '';
     form["additional-contribution"].value = '';
     form["time-amount"].value = '';
     form["return-rate"].value = '';
     form["tax-rate"].value = '';
+
+    resetChart();
 
     const errorInputsContainers = document.querySelectorAll('.error');
 
