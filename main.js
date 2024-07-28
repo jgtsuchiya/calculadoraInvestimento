@@ -7,6 +7,10 @@ const progressionChart = document.getElementById('progression');
 const form = document.getElementById('investment-form');
 const clearFormButton = document.getElementById('clear-form');
 
+function formatCurrency(value) {
+    return value.toFixed(2);
+}
+
 function renderProgression(evento) {
     evento.preventDefault();
 
@@ -30,18 +34,23 @@ function renderProgression(evento) {
         returnRatePeriod,
     );
 
+    const finalInvestmentObject = returnsArray[returnsArray.length - 1];
+
     new Chart(finalMoneyChart, {
         type: 'doughnut',
         data: {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'Total Investido',
+                'Rendimento',
+                'Imposto'
             ],
             datasets: [
                 {
-                    label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    data: [
+                        formatCurrency(finalInvestmentObject.investedAmount),
+                        formatCurrency(finalInvestmentObject.totalInterestReturns * (1 - (taxRate / 100))),
+                        formatCurrency(finalInvestmentObject.totalInterestReturns * (taxRate / 100))
+                    ],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
