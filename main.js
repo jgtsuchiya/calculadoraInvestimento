@@ -61,6 +61,38 @@ function renderProgression(evento) {
             ]
         },
     })
+
+    new Chart(progressionChart, {
+        type: 'bar',
+        data: {
+            labels: returnsArray.map(investmentObject => investmentObject.month),
+            datasets: [
+                {
+                    label: 'Total Investido',
+                    data: returnsArray.map((investmentObject) =>
+                        formatCurrency(investmentObject.investedAmount)),
+                    backgroundColor: 'rgb(255, 99, 132)',
+                },
+                {
+                    label: 'Retorno do Investimento',
+                    data: returnsArray.map((investmentObject) =>
+                        formatCurrency(investmentObject.interestReturns)),
+                    backgroundColor: 'rgb(54, 162, 235)',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                }
+            }
+        }
+    })
 }
 
 function clearForm() {
